@@ -1,0 +1,443 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background: #000;
+  cursor: default;
+  overscroll-behavior: none;
+  touch-action: none;
+  position: fixed;
+  inset: 0;
+}
+
+#stars {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+.message {
+  position: fixed;
+  left: 50%;
+  top: 56%;
+  transform: translate(-50%, -38%);
+  width: min(38vw, 280px);
+  padding: 0 1rem;
+  text-align: center;
+  z-index: 10;
+  pointer-events: none;
+  transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1), visibility 1s;
+}
+
+.message.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.message.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+#message-text {
+  color: #ffffff;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1rem, 2.3vw, 1.28rem);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.7;
+  letter-spacing: 0.03em;
+  opacity: 0;
+  transform: translateY(14px) scale(0.96);
+  filter: blur(6px);
+  transition:
+    opacity 1.05s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.05s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 1.05s cubic-bezier(0.22, 1, 0.36, 1);
+  text-shadow:
+    0 0 4px rgba(255, 255, 255, 0.95),
+    0 0 12px rgba(255, 140, 140, 0.8),
+    0 0 26px rgba(255, 80, 80, 0.55),
+    0 0 42px rgba(220, 45, 45, 0.35),
+    0 0 60px rgba(180, 25, 25, 0.2);
+}
+
+#message-text.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+#message-text.leaving {
+  opacity: 0;
+  transform: translateY(-10px) scale(0.98);
+  filter: blur(5px);
+}
+
+#message-text.final {
+  font-size: clamp(1.5rem, 4.2vw, 2.15rem);
+  font-weight: 700;
+  font-style: normal;
+  letter-spacing: 0.08em;
+  animation: final-glow 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes final-glow {
+  from {
+    text-shadow:
+      0 0 6px rgba(255, 255, 255, 1),
+      0 0 16px rgba(255, 150, 150, 0.9),
+      0 0 32px rgba(255, 90, 90, 0.7),
+      0 0 48px rgba(255, 55, 55, 0.45);
+    transform: translateY(0) scale(1);
+  }
+  to {
+    text-shadow:
+      0 0 10px rgba(255, 255, 255, 1),
+      0 0 24px rgba(255, 170, 170, 1),
+      0 0 44px rgba(255, 90, 90, 0.9),
+      0 0 70px rgba(255, 40, 40, 0.6);
+    transform: translateY(0) scale(1.04);
+  }
+}
+
+.love-rain {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+
+.love-rain.active {
+  opacity: 1;
+}
+
+.love-drop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: clamp(0.85rem, 2.4vw, 1.35rem);
+  font-weight: 700;
+  color: #ff2a2a;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+  text-shadow:
+    0 0 4px rgba(255, 80, 80, 1),
+    0 0 12px rgba(255, 40, 40, 0.95),
+    0 0 24px rgba(220, 20, 20, 0.75),
+    0 0 40px rgba(180, 0, 0, 0.45);
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+.love-gift {
+  position: relative;
+  width: 38px;
+  height: 42px;
+  display: block;
+  text-shadow: none;
+  filter: drop-shadow(0 0 10px rgba(255, 70, 70, 0.7));
+  pointer-events: auto;
+  cursor: pointer;
+  animation: gift-pulse 1.8s ease-in-out infinite;
+  transition: filter 0.25s ease;
+  touch-action: manipulation;
+}
+
+.love-gift::after {
+  content: '';
+  position: absolute;
+  inset: -14px;
+}
+
+.love-gift:hover,
+.love-gift:active {
+  filter: drop-shadow(0 0 18px rgba(255, 200, 80, 0.95));
+  animation-duration: 0.9s;
+}
+
+@keyframes gift-pulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba(255, 70, 70, 0.55));
+  }
+  50% {
+    filter: drop-shadow(0 0 16px rgba(255, 210, 90, 0.9));
+  }
+}
+
+.love-gift .gift-body {
+  position: absolute;
+  left: 3px;
+  right: 3px;
+  bottom: 0;
+  height: 26px;
+  background: linear-gradient(180deg, #ff5a5a 0%, #c01010 100%);
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+}
+
+.love-gift .gift-lid {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 9px;
+  height: 11px;
+  background: linear-gradient(180deg, #ff7a7a 0%, #e02020 100%);
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.35);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.love-gift:hover .gift-lid,
+.love-gift:active .gift-lid {
+  transform: translateY(-3px);
+}
+
+.love-gift .gift-ribbon-v {
+  position: absolute;
+  left: 50%;
+  top: 9px;
+  bottom: 0;
+  width: 6px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, #ffe566 0%, #f0c020 100%);
+  border-radius: 1px;
+  z-index: 2;
+}
+
+.love-gift .gift-ribbon-h {
+  position: absolute;
+  left: 3px;
+  right: 3px;
+  top: 19px;
+  height: 6px;
+  background: linear-gradient(90deg, #ffe566 0%, #f0c020 100%);
+  z-index: 2;
+}
+
+.love-gift .gift-bow {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 18px;
+  height: 11px;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+
+.love-gift .gift-bow::before,
+.love-gift .gift-bow::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  width: 10px;
+  height: 9px;
+  background: #ffe566;
+  border-radius: 50% 50% 40% 40%;
+  box-shadow: 0 0 8px rgba(255, 220, 80, 0.65);
+}
+
+.love-gift .gift-bow::before {
+  left: 0;
+  transform: rotate(-28deg);
+}
+
+.love-gift .gift-bow::after {
+  right: 0;
+  transform: rotate(28deg);
+}
+
+.love-polaroid {
+  width: min(148px, 38vw);
+  height: auto;
+  display: block;
+  text-shadow: none;
+  pointer-events: none;
+  filter: none;
+  z-index: 8;
+}
+
+.love-polaroid .polaroid-card {
+  display: block;
+  padding: 9px 9px 30px;
+  background: linear-gradient(160deg, #fffdf8 0%, #f3ebe0 100%);
+  border-radius: 3px;
+  box-shadow:
+    0 14px 36px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.4) inset,
+    0 0 28px rgba(255, 80, 80, 0.2);
+  transform-origin: center center;
+  animation: polaroid-pop 0.75s cubic-bezier(0.22, 1.4, 0.36, 1);
+}
+
+.love-polaroid img {
+  display: block;
+  width: 100%;
+  height: clamp(110px, 28vw, 156px);
+  object-fit: cover;
+  object-position: center;
+  background: #222;
+}
+
+.love-polaroid .polaroid-caption {
+  display: block;
+  margin-top: 11px;
+  text-align: center;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(0.72rem, 2.2vw, 0.85rem);
+  font-weight: 600;
+  font-style: italic;
+  letter-spacing: 0.08em;
+  text-transform: none;
+  color: #6b5344;
+}
+
+@keyframes polaroid-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.12) rotate(-12deg);
+    filter: brightness(2.2);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(1.12) rotate(2deg);
+    filter: brightness(1.15);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    filter: brightness(1);
+  }
+}
+
+.flash {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  background: radial-gradient(circle at center, rgba(255, 220, 220, 0.55), rgba(255, 60, 60, 0.12) 40%, transparent 70%);
+  opacity: 0;
+}
+
+.flash.burst {
+  animation: flash-burst 0.7s ease-out;
+}
+
+@keyframes flash-burst {
+  0% { opacity: 0.85; }
+  100% { opacity: 0; }
+}
+
+@media (max-width: 768px) {
+  .message {
+    top: 52%;
+    width: min(62vw, 240px);
+    transform: translate(-50%, -42%);
+    padding: 0 0.6rem;
+  }
+
+  #message-text {
+    font-size: clamp(0.92rem, 3.8vw, 1.1rem);
+    line-height: 1.55;
+    letter-spacing: 0.02em;
+  }
+
+  #message-text.final {
+    font-size: clamp(1.25rem, 6.5vw, 1.75rem);
+    letter-spacing: 0.05em;
+  }
+
+  .love-drop {
+    font-size: clamp(0.78rem, 3.4vw, 1.05rem);
+  }
+
+  .love-gift {
+    width: 46px;
+    height: 50px;
+  }
+
+  .love-gift::after {
+    inset: -18px;
+  }
+
+  .love-gift .gift-body {
+    height: 30px;
+  }
+
+  .love-gift .gift-lid {
+    top: 11px;
+    height: 12px;
+  }
+
+  .love-gift .gift-ribbon-h {
+    top: 22px;
+  }
+
+  .love-polaroid {
+    width: min(150px, 42vw);
+  }
+
+  .love-polaroid .polaroid-card {
+    padding: 8px 8px 26px;
+  }
+
+  .love-polaroid img {
+    height: clamp(120px, 36vw, 150px);
+  }
+}
+
+@media (max-width: 400px) {
+  .message {
+    width: min(68vw, 220px);
+    top: 51%;
+  }
+
+  #message-text {
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+
+  #message-text.final {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-height: 700px) and (orientation: landscape) {
+  .message {
+    top: 54%;
+    width: min(34vw, 260px);
+    transform: translate(-50%, -50%);
+  }
+
+  #message-text {
+    font-size: clamp(0.8rem, 2vw, 1rem);
+    line-height: 1.4;
+  }
+
+  #message-text.final {
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+  }
+
+  .love-polaroid {
+    width: min(110px, 22vw);
+  }
+
+  .love-polaroid img {
+    height: 90px;
+  }
+}
