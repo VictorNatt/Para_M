@@ -33,7 +33,7 @@ const PHRASES = [
   'Você tem uma luz que não da pra explicar',
   'Eu olho pra você e vejo tanto, mais do que beleza',
   'Vejo um coração enorme que merece o melhor dessa vida',
-  'É um privilegio viver te conhecer e viver esse amor com você',
+  'É um privilegio te conhecer e viver esse amor com você',
   'EU TE AMOOOO',
 ];
 
